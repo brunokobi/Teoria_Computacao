@@ -1,0 +1,189 @@
+\documentclass[12pt]{scrartcl}
+\usepackage{graphicx}
+\usepackage[brazil]{babel}
+\usepackage [utf8] { inputenc }
+\usepackage [T1] { fontenc }
+\usepackage{minted}
+\usepackage{amsmath}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+
+
+
+\begin{document}
+\author{Aluno: \textbf{Bruno Kobi Valadares de Amorim}}
+
+
+\title{Lista de Exercícios 1 \newline\newline
+\large Teoria da Computação — Mestrado em Computação Aplicada\newline
+\large Prof. Jefferson O. Andrade\newline
+}
+\date{2022/2}
+\maketitle
+
+\section{Exercício}
+Implemente cada um dos programas a seguir como um programa SISO Python. Em cada
+caso, você pode assumir que a entrada é válida (ou seja, consiste em uma lista de números
+inteiros formatada corretamente).
+
+\subsection{}
+Escreva um programa que receba como entrada uma lista de inteiros separados por
+espaço em branco. A saída é uma string que representa a soma de cada segundo
+inteiro na lista. Por exemplo, se a entrada for “58 41 78 3 25 9”, a saída será “53”,
+porque 41 + 3 + 9 = 53.
+
+\begin{minted}{python}
+def pA(lista):
+    x = lista.split(" ")
+    soma: int = 0
+    for i in range(len(x)):
+        if i % 2 != 0:
+            soma += int(x[i])
+    return str(soma)
+\end{minted}
+
+\subsection{}
+ Escreva um programa, semelhante ao programa em (a), mas somando cada terceiro
+elemento da entrada em vez de cada segundo elemento.
+\begin{minted}{python}
+def pB(lista):
+x = lista.split(" ")
+    soma: int = 0
+    for i in range(1, len(x)+1):
+        if i % 3 == 0:
+            soma += int(x[i-1])
+            i += 3
+    return str(soma)
+\end{minted}
+
+
+\subsection{}
+Escreva um programa de decisão que aceite uma lista de inteiros se a soma de cada
+terceiro elemento for maior que a soma de cada segundo elemento, e rejeite caso
+contrário. Seu programa deve importar e usar os programas de (a) e (b).
+
+\begin{minted}{python}
+from pA import pA
+from pB import pB
+
+def pC(lista):
+    i2 = int(pA(lista))
+    i3 = int(pB(lista))
+
+    if(i3 > i2):
+        return 'true'
+    else:
+        return 'false'
+\end{minted}
+
+\section{Exercício}
+\subsection{Qual o resultado de oooops("abc")?}
+Resposta = Accc
+
+\subsection{Qual o resultado de oooops("abcdefghij")?}
+Resposta = Acccccccccc
+
+\subsection{Qual o resultado de oooops("a")?}
+Resposta = undefined
+
+\subsection{Qual o resultado de oooops("008")?}
+Resposta = A88888888
+
+\subsection{Qual o resultado de oooops("8")?}
+Resposta = undefined
+
+\subsection{Qual o resultado de oooops("-11")?}
+Resposta = undefined
+
+\subsection{Descreva o conjunto de todas as strings I para as quais oooops(I) é indefinido.}
+Resposta = I é indefinido: (caso I.length < 3 ) e ( caso I seja inteiro < 0 )\newline\newline
+$(I \subset  Z^*) \ \cup\ (I=AB\ | \ A \ e \ B = [A-Z||0-9])$
+
+
+\section{Exercício}
+Use a prova por contradição para provar as seguintes afirmações:
+
+\subsection{Existem infinitos números inteiros positivos.}
+Inicialmente supomos que a quantidade números inteiros positivos é finita,
+então podemos supor que há apenas \textbf{n} números inteiros positivos.\newline
+Podemos colocar os números positivos em ordem \textbf{p1, p2 ... pn},
+de tal forma que:\newline
+\textbf{p1 < p2 < . . . < pn}. \newline
+Com isto, teríamos que \textbf{pn} é o maior número positivo de todos.\newline
+Considere o número \textbf{pn + 1}, ele também é inteiro positivo, e é
+maior do que todos os demais números, incluindo \textbf{pn}. Isto contradiz a afirmação de que \textbf{pn} é o maior inteiro positivo de todos, então podemos garantir que existem infinitos números inteiros positivos. 
+
+
+\subsection{Existem infinitos números inteiros negativos.}
+Inicialmente supomos que a quantidade números inteiros negativos é finita,
+então podemos supor que há apenas \textbf{n} números inteiros negativos.\newline
+Podemos colocar os números negativos em ordem \textbf{p1, p2 ... pn},
+de tal forma que:\newline
+\textbf{p1 > p2 > . . . > pn}. \newline
+Com isto, teríamos que \textbf{pn} é o menor número negativo de todos.\newline
+Considere o número \textbf{pn - 1}, ele também é inteiro negativo, e é
+menor do que todos os demais números, incluindo \textbf{pn}. Isto contradiz a afirmação de que \textbf{pn} é o menor inteiro negativo de todos, então podemos garantir que existem infinitos números inteiros negativos.
+
+
+\subsection{ Existem infinitos números pares.}
+Inicialmente supomos que a quantidade números pares é finita,
+então podemos supor que há apenas \textbf{n} números pares.\newline
+Podemos colocar os números pares em ordem \textbf{p1, p2 ... pn},
+de tal forma que:\newline
+\textbf{p1 < p2 < . . . < pn}. \newline
+Com isto, teríamos que \textbf{pn} é o maior número par de todos.\newline
+Considere o número \textbf{pn + 2}, ele também é par, e é
+maior do que todos os demais números, incluindo \textbf{pn}. Isto contradiz a afirmação de que \textbf{pn}
+ é o maior par de todos, então podemos garantir que existem infinitos números pares.
+ 
+ 
+ \subsection{ Não existe o menor número real positivo.}
+Inicialmente supomos que exista o menor número real positivo,
+então podemos supor que  \textbf{M} é o menor numero real positivo.\newline
+Considere o número $\displaystyle\frac{\textbf{M}}{2}$, ele também é real positivo, e é
+menor que \textbf{M}. Isto contradiz a afirmação de que \textbf{M}
+ é o menor número real positivo, então podemos garantir que não existe o menor número real positivo.
+
+
+
+
+
+
+
+
+\section{Exercício}
+Como indicado na Figura 3.3 do livro “What Can Be Computed?”, a saída do comando containsGAGA(rf('containsGAGA.py')) é “yes”.
+Escreva uma nova versão deste programa, chamada containsGA\_GA.py. Essa nova versão deve ser equivalente à antiga,
+i.e., produzir as mesmas respostas para as mesmas entradas. Além disso os comandoscontainsGA\_GA(rf('containsGA\_GA.py')) e containsGAGA(rf('containsGA\_GA.py'))
+devem ambos retornar “no”.
+
+\begin{minted}{python}
+def containsGA_GA(inString):
+    chave = 'G'+'A'+'G'+'A'
+    if chave in inString:
+        return 'yes'
+    else:
+        return 'no'
+\end{minted}
+
+\section{Exercício}
+Após estudar os programas acima, determine a saída dos seguintes comando em Python:
+
+\subsection{yesOnStringApprox(rf( \textcolor{red}{'longerThan1K.py'}), rf( \textcolor{red}{'longerThan1K.py'}))}
+Resposta = \textbf{no}
+
+\subsection{yesOnStringApprox(rf( \textcolor{red}{'maybeLoop.py'}), rf( \textcolor{red}{'maybeLoop.py'}))}
+Resposta = \textbf{no}
+
+\subsection{yesOnSelfApprox(rf( \textcolor{red}{'longerThan1K.py'}))}
+Resposta = \textbf{no}
+
+\subsection{notYesOnSelfApprox(rf( \textcolor{red}{'containsGAGA.py'}))}
+Resposta = \textbf{no}
+
+
+
+
+
+\end{document}
+
+
