@@ -1,0 +1,418 @@
+\documentclass[12pt]{scrartcl}
+\usepackage{graphicx}
+\usepackage[brazil]{babel}
+\usepackage [utf8] { inputenc }
+\usepackage [T1] { fontenc }
+\usepackage{minted}
+\usepackage{amsmath}
+\usepackage{amsfonts,amssymb}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\usepackage{tikz, wasysym}
+\usetikzlibrary{automata,positioning}
+
+
+
+
+\begin{document}
+\author{Aluno: \textbf{Bruno Kobi Valadares de Amorim}}
+
+
+\title{Lista de Exercícios 2 \newline\newline
+\large Teoria da Computação — Mestrado em Computação Aplicada\newline
+\large Prof. Jefferson O. Andrade\newline
+}
+\date{2022/2}
+\maketitle
+
+\section{Exercício}
+Seja CountGs um problema computacional que recebe I, uma string ASCII, como entrada.
+A solução (única) é o número de vezes que “G” ocorre em I, escrito em notação decimal.
+
+\subsection{}
+O CountGs tem alguma instância positiva? Se sim, dê um exemplo.
+\newline\newline\textbf{R:}\ Sim, CountGs não tem retorno de "no" em nenhuma combinação de entrada ASCII, então é uma instância positiva. conforme o Livro:"For problems defined on ASCII inputs, an instance is negative if its solution set is the singleton {“no”}. Otherwise the instance is positive."  
+
+
+\begin{minted}{python}
+def CountGs(I):
+    total = I.count("G")  
+    potencia = 0
+    while total >= 10:
+        potencia = potencia + 1
+        total = total / 10
+        print(potencia)
+        continue
+    return str(total)+'X10^'+str(potencia)
+\end{minted}
+
+\subsection{}
+O CountGs tem alguma instância negativa? Se sim, dê um exemplo.
+\newline\newline\textbf{R:}\ Não
+
+
+\subsection{}
+Sugira uma definição de CountGsDecision, um problema de decisão que intuitivamente parece exigir o mesmo processo computacional que o problema da função
+CountGs.
+
+\begin{minted}{python}
+def CountGsDecision(I):
+    if I.count("G") > 0:
+        return 'yes'
+    else:
+        return 'no'
+\end{minted}
+
+\section{Exercício}
+Seja L uma linguagem decidível
+\subsection{}
+Prove que $\bar{L}$ também é decidível.
+\newline\newline\textbf{R:}\ \ $\bar{L}$ = \{(B,W) \ | \ B é um AFD que aceita W de entrada\}
+\newline Se tanto L quanto $\bar{L}$ são Turing-reconhecíveis, fazemos M1 ser o reconhecedor para L e M2 o reconhecedor para $\bar{L}$.
+\newline W = "aa"
+\newline M1 = ((q1,q2).(a,b),((q1,a,q2),(q1,b,q2),(q2,a,q2),(q2,b,q2)),q1,(q2))
+\newline \textbf{Testando W na máquina de turing M1 = Aceito}
+\newline M2 = ((q1,q2).(not a, not b),((q1,not a,q2),(q1,not b,q2),(q2,a,q2),(q2,not b,q2)),q1,(q2))
+\newline \textbf{Testando W na máquina de turing M2 = Rejeitado}
+\newline\textbf{ Provando que $\bar{L}$ também é decidível. }
+
+
+
+
+\subsection{}
+Prove que a união e a interseção de linguagens decidível também são decidível
+\newline\newline\textbf{R:} Para provar esse teorema construimos um novo AFC C apartir de A e B , tal que C aceite somente aquelas cadeias são aceitas ou por A ou por B, não por ambos Se A e B reconhecem a mesma linguagem C não aceitará nada.
+\newline MtA = ((q1,q2).(a),((q1,a,q2),(q2,a,q2)),q1,(q2))
+\newline MtB = ((q1,q2).(b),((q1,b,q2),(q2,b,q2)),q1,(q2))
+\newline A$\cup$B = \{(C,W) \ | \ C é um AFD que aceita W não está contindo em A e B ao mesmo tempo\}
+\newline \textbf{O W não é aceito na MTc}
+
+
+\subsection{}
+Sendo L decidível, pode-se sempre afirmar que L* é decidível também? Prove esta afirmação ou dê um contraexemplo.
+ \newline Defini-se, para uma linguagem L qualquer, o seu fechamento, L*
+ \newline Por exemplo:
+ \newline Seja a linguagem L = {0, 11}
+ \newline  L * = { λ, 0, 11, 00, 011, 110, 1111, 000, 0011, 0110, .... } 
+ \newline Se tanto L quanto L* são Turing-reconhecíveis, fazemos M1 ser o reconhecedor para L e M2 o reconhecedor para L*.
+ \newline W = "aa"
+\newline M1 = ((q1,q2).(a),((q1,a,q2),(q2,a,q2)),q1,(q2)) 
+\newline M2 = ((q1,q2).(a,b),((q1,a,q2),(q1,b,q2),(q2,a,q2),(q2,b,q2)),q1,(q2))
+\newline \textbf{O W aceito na M1, e também é aceito pelo M2}
+\newline\textbf{ Provando que L* também é decidível}
+
+
+
+
+\section{Exercício}
+Especifique uma Máquina de Turing (MT) que receba uma sting binária na fita e,
+ao final do processamento, duplique esta string. Por exemplo, suponha que a cadeia
+de entrada seja “$\circledast$00110”, ao final do processamento a máquina deve deixar a fica com
+“$\circledast$0011000110”. O caractere “$\circledast$” está sendo usado com símbolo de início de fita e não
+deve ser duplicado.\textbf{(Legenda: $\Box = space,$\  $\circledast = start,$ \  $?=aux$)}
+
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
+   \node[state,initial] (0) {$q_0$};
+   \node[state] (1) [right=of 0] {$q_1$};
+  \node[state] (2)  [right=of 1]{$q_2$};
+   \node[state] (11) [below=of 2] {$q_1_1$};
+  \node[state] (3) [right=of 11] {$q_3$};
+\node[state] (4)  [right=of 3] {$q_4$};
+  \node[state] (5)  [right=of 4] {$q_5$};
+  \node[state] (6) [right=of 5,yshift=1cm] {$q_6$};
+  \node[state] (7)  [above=of 3, yshift=2cm]{$q_7$};
+    \node[state] (8) [right=of 7] {$q_8$};
+     \node[state] (9) [right=of 8] {$q_9$};
+      \node[state] (10) [right=of 9,yshift=-1cm] {$q_1_0$};
+       \node[state] (12) [below=of 11] {$q_1_2$};
+     \node[state] (13) [below=of 12,yshift=-1cm] {$q_1_3$};
+      \node[state] (14) [right=of 13,xshift=2cm] {$q_1_4$};
+       \node[state] (15) [left=of 13] {$q_1_5$};
+      \node[state] (16) [below=of 13] {$q_1_6$};
+      
+     
+   \node[state,accepting] (17) [right=of 16,xshift=2cm] {$Halt$};
+   \path[->]
+   
+    (0) edge [loop  above]      node {\tiny$\begin{matrix} $0/0, R$ \\ $1/1, R$ \end{matrix}$}
+    (0) edge                    node {\tiny$\Box/?,L$}(1)
+    (1) edge [loop  above]      node {\tiny$\begin{matrix} $0/0, L$ \\ $1/1, L$ \end{matrix}$}
+    (1) edge                    node {\tiny$\Box/\Box,R$}(2)
+    (2) edge                    node {\tiny$0/Z,R$}(3)
+    (2) edge                    node {\tiny$1/U,R$}(7)
+    (2) edge                    node {\tiny$?/?,L$}(11)
+    (3) edge [loop  below]      node {\tiny$\begin{matrix} $0/0, R$ \\ $1/1, R$ \end{matrix}$}
+    (3) edge                    node {\tiny$?/?,R$}(4)
+    (4) edge [loop  below]      node {\tiny$\begin{matrix} $0/0, R$ \\ $1/1, R$ \end{matrix}$}
+    (4) edge                    node {\tiny$\Box/0,L$}(5)
+    (5) edge [loop  below]      node {\tiny$\begin{matrix} $0/0, L$ \\ $1/1, L$ \end{matrix}$}
+    (5) edge                    node {\tiny$?/?,L$}(6)
+    (6) edge [loop  right]      node {\tiny$\begin{matrix} $0/0, L$ \\ $1/1, L$ \end{matrix}$}
+    (6) edge                    node {\tiny$Z/Z,R$}(2)
+    (7) edge [loop  above]      node {\tiny$\begin{matrix} $0/0, R$ \\ $1/1, R$ \end{matrix}$}
+    (7) edge                    node {\tiny$?/?,R$}(8)
+    (8) edge [loop  above]      node {\tiny$\begin{matrix} $0/0, R$ \\ $1/1, R$ \end{matrix}$}
+    (8) edge                    node {\tiny$\Box/1,L$}(9)
+    (9) edge [loop  above]      node {\tiny$\begin{matrix} $0/0, L$ \\ $1/1, L$ \end{matrix}$}
+    (9) edge                    node {\tiny$?/?,L$}(10)
+    (10) edge [loop  right]      node {\tiny$\begin{matrix} $0/0, L$ \\ $1/1, L$ \end{matrix}$}
+    (10) edge                    node {\tiny$U/U,R$}(2)
+    (11) edge [loop  left]      node {\tiny$\begin{matrix} $Z/0, L$ \\ $U/1, L$ \end{matrix}$}
+    (11) edge                    node {\tiny$\Box/\Box,R$}(12)
+     (12) edge [loop  left]      node {\tiny$\begin{matrix} $0/0, R$ \\ $1/1, R$ \end{matrix}$}
+    (12) edge                    node {\tiny$?/?,R$}(13)
+        (13) edge                    node {\tiny$1/?,L$}(14)
+         (13) edge                    node {\tiny$0/?,L$}(15)
+          (13) edge                    node {\tiny$\Box/\Box,L$}(16)
+           (14) edge                    node {\tiny$?/1,R$}(12)
+            (15) edge                    node {\tiny$?/0,R$}(12)
+             (16) edge                    node {\tiny$\circledast/\circledast,N $}(17)
+            (16) edge [loop  left]      node {\tiny$\begin{matrix} $0/0, L$ \\ $1/1, L$ \\ $ ?/\Box, L$  \end{matrix}$}
+           
+\end{tikzpicture}
+
+\begin{minted}{python}
+;Maquina de turing duplica binario
+;http://morphett.info/turing/turing.html?a9e27fae74809ef7ce599afff5901fba
+
+;Estado q0.
+0 0 0 r 0
+0 1 1 r 0
+0 _ ? l 1
+
+;Estado q1.
+1 0 0 l 1
+1 1 1 l 1
+1 _ _ r 2
+
+;Estado q2.
+2 0 Z r 3
+2 1 U r 7
+2 ? ? l 11
+
+;Estado q3.
+3 0 0 r 3
+3 1 1 r 3
+3 ? ? r 4
+
+;Estado q4.
+4 0 0 r 4
+4 1 1 r 4
+4 _ 0 l 5
+
+;Estado q5.
+5 0 0 l 5
+5 1 1 l 5
+5 ? ? l 6
+
+;Estado q6.
+6 0 0 l 6
+6 1 1 l 6
+6 Z Z r 2
+
+;Estado q7.
+7 0 0 r 7
+7 1 1 r 7
+7 ? ? r 8
+
+;Estado q8.
+8 0 0 r 8
+8 1 1 r 8
+8 _ 1 l 9
+
+;Estado q9.
+9 0 0 l 9
+9 1 1 l 9
+9 ? ? l 10
+
+;Estado q10.
+10 0 0 l 10
+10 1 1 l 10
+10 U U r 2
+
+;Estado q11.
+11 U 1 l 11
+11 Z 0 l 11
+11 _ _ r 12
+
+;Estado q12.
+12 0 0 r 12
+12 1 1 r 12
+12 ? ? r 13
+
+;Estado q13.
+13 1 ? l 14
+13 0 ? l 15
+13 _ _ l 16
+
+;Estado q14.
+14 ? 1 r 12
+
+;Estado q15.
+15 ? 0 r 12
+
+;Estado q16.
+16 1 1 l 16
+16 0 0 l 16
+16 ? _ l 16
+16 * * * halt-accept
+
+\end{minted}
+
+
+
+
+\section{Exercício}
+Especifique uma Máquina de Turing que reverta a sua entrada. Por exemplo, para a
+entrada “$\circledast$GATTACA” a saída seria “$\circledast$ACATTAG”. Você pode assumir que a entrada é
+uma string genética. O caractere “$\circledast$” está sendo usado com símbolo de início de fita e
+não deve ser revertido.
+\textbf{(Legenda: $\Box = space,$\  $\circledast = start,$ \  $?=aux$)}  
+
+\begin{tikzpicture}[shorten >=1pt,node distance=4cm,on grid,auto]
+   \node[state,initial] (0) {$q_0$};
+   \node[state] (1) [right=of 0] {$q_1$};
+  \node[state] (2)  [right=of 1]{$q_4$};
+  \node[state] (3) [above=of 2] {$q_3$};
+\node[state] (4)  [above=of 3] {$q_2$};
+  \node[state] (5)  [below=of 2] {$q_5$};
+  \node[state] (6) [right=of 5,xshift=2cm] {$q_6$};
+  \node[state] (7)  [below=of 1]{$q_7$};
+    \node[state] (8) [below=of 7] {$q_8$};
+    \node[state,accepting] (9) [right=of 8,xshift=2cm] {$Halt$};
+   \path[->]
+   
+    (0) edge [loop  above]      node {\tiny$\begin{matrix} $A/A, R$ \\ $C/C, R$ \\$G/G, R$ \\$T/T, R$ \end{matrix}$}
+    (0) edge                    node {\footnotesize$\Box/\Box,L$}(1)
+    (1) edge [loop  above]      node {\footnotesize$?/?,L$}(1)
+    (1) edge                    node {\tiny$A/?,R$}(4)
+    (1) edge                    node {\tiny$C/?,R$}(3)
+    (1) edge                    node {\tiny$G/?,R$}(2)
+    (1) edge                    node {\tiny$T/?,R$}(5)
+    (1) edge                    node {\footnotesize$\circledast/\Box,R$}(7)
+    (2) edge [loop above]       node {\tiny$\begin{matrix} $A/A, R$ \\ $C/C, R$ \\$G/G, R$ \\$T/T, R$\\$?/?, R$   \end{matrix}$} (2)
+    (2) edge                     node {\tiny$\Box/G,L$}(6)
+    (3) edge [loop above]       node {\tiny$\begin{matrix} $A/A, R$ \\ $C/C, R$ \\$G/G, R$ \\$T/T, R$\\$?/?, R$   \end{matrix}$} (2)
+    (3) edge                     node {\tiny$\Box/C,L$}(6)
+    (4) edge [loop above]       node {\tiny$\begin{matrix} $A/A, R$ \\ $C/C, R$ \\$G/G, R$ \\$T/T, R$\\$?/?, R$   \end{matrix}$} (2)
+    (4) edge                     node {\tiny$\Box/A,L$}(6)
+    (5) edge [loop below]       node {\tiny$\begin{matrix} $A/A, R$ \\ $C/C, R$ \\$G/G, R$ \\$T/T, R$\\$?/?, R$   \end{matrix}$} (2)
+     (5) edge                     node {\tiny$\Box/T,L$}(6)
+    (6) edge [loop below]       node {\tiny$\begin{matrix} $A/A, L$ \\ $C/C, L$ \\$G/G, L$ \\$T/T, L$ \end{matrix}$} (2)
+    (6) edge                        node {\tiny$?/?,L$}(1)
+    (7) edge [loop right]        node {\tiny$?/\Box,R$}(7)
+    (7) edge                       node {\tiny$\begin{matrix} $A/A, L$ \\ $C/C, L$ \\$G/G, L$ \\$T/T, L$ \end{matrix}$} (8)
+     (8) edge        node {\footnotesize$\Box/\circledast,N$}(9)
+\end{tikzpicture}
+
+\begin{minted}{python}
+;Maquina de turing para inverter uma string genética
+http://morphett.info/turing/turing.html?aa8aa1d47ae552aab6882ee6d03d63b0 
+
+;Estado q0.
+0 A A r 0
+0 C C r 0
+0 G G r 0
+0 T T r 0
+0 _ _ l 1
+
+
+;Estado q1.
+1 A ? r 2
+1 C ? r 3
+1 G ? r 4
+1 T ? r 5
+1 ? ? l 1
+1 * _ r 7
+
+;Estado q2.
+2 A A r 2
+2 C C r 2
+2 G G r 2
+2 T T r 2
+2 ? ? r 2
+2 _ A l 6
+
+;Estado q3.
+3 A A r 3
+3 C C r 3
+3 G G r 3
+3 T T r 3
+3 ? ? r 3
+3 _ C l 6
+
+;Estado q4.
+4 A A r 4
+4 C C r 4
+4 G G r 4
+4 T T r 4
+4 ? ? r 4
+4 _ G l 6
+
+;Estado q5.
+5 A A r 5
+5 C C r 5
+5 G G r 5
+5 T T r 5
+5 ? ? r 5
+5 _ T l 6
+
+;Estado q6.
+6 A A l 6
+6 C C l 6
+6 G G l 6
+6 T T l 6
+6 ? ? l 1
+
+;Estado q7.
+7 A A l 8
+7 C C l 8
+7 G G l 8
+7 T T l 8
+7 ? _ r 7
+
+;Estado q8.
+8 _ * * halt-accept
+\end{minted}
+
+
+
+
+\section{Exercício}
+Escreva o programa1 applyBothTwice que receba como entrada uma única string S.
+O parâmetro S codifica três strings, P, Q e I utilizando a codificação ESS [1, pag. 61]
+da seguinte forma: S = ESS((P, Q), I). Sendo que P e Q são programas. A saída de
+applyBothTwice deve ser Q(P(Q(P(I)))).
+
+\begin{minted}{python}
+import utils
+from utils import rf
+from universal import universal
+
+I = 'yes'
+S1 = utils.ESS(rf('P.py'), rf('Q.py'))
+
+# String unica de entrada
+S = utils.ESS(S1, I)
+
+
+def applyBothTwice(S):
+    (S1, I) = utils.DESS(S)
+    (P, Q) = utils.DESS(S1)
+
+    # Q(P(Q(P(I)))) formato de saida desejado
+    x1 = universal(P, I)
+    x2 = universal(Q, x1)
+    x3 = universal(P, x2)
+    x4 = universal(Q, x3)
+
+    return x4
+\end{minted}
+
+
+
+
+
+
+\end{document}
+
+

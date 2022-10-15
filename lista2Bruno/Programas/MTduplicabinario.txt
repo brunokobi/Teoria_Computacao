@@ -1,0 +1,85 @@
+;bruno kobi valadares de amorim 
+;Maquina de turing duplica binario
+;http://morphett.info/turing/turing.html?a9e27fae74809ef7ce599afff5901fba
+
+;Estado q0.
+0 0 0 r 0
+0 1 1 r 0
+0 _ ? l 1
+
+;Estado q1.
+1 0 0 l 1
+1 1 1 l 1
+1 _ _ r 2
+
+;Estado q2.
+2 0 Z r 3
+2 1 U r 7
+2 ? ? l 11
+
+;Estado q3.
+3 0 0 r 3
+3 1 1 r 3
+3 ? ? r 4
+
+;Estado q4.
+4 0 0 r 4
+4 1 1 r 4
+4 _ 0 l 5
+
+;Estado q5.
+5 0 0 l 5
+5 1 1 l 5
+5 ? ? l 6
+
+;Estado q6.
+6 0 0 l 6
+6 1 1 l 6
+6 Z Z r 2
+
+;Estado q7.
+7 0 0 r 7
+7 1 1 r 7
+7 ? ? r 8
+
+;Estado q8.
+8 0 0 r 8
+8 1 1 r 8
+8 _ 1 l 9
+
+;Estado q9.
+9 0 0 l 9
+9 1 1 l 9
+9 ? ? l 10
+
+;Estado q10.
+10 0 0 l 10
+10 1 1 l 10
+10 U U r 2
+
+;Estado q11.
+11 U 1 l 11
+11 Z 0 l 11
+11 _ _ r 12
+
+;Estado q12.
+12 0 0 r 12
+12 1 1 r 12
+12 ? ? r 13
+
+;Estado q13.
+13 1 ? l 14
+13 0 ? l 15
+13 _ _ l 16
+
+;Estado q14.
+14 ? 1 r 12
+
+;Estado q15.
+15 ? 0 r 12
+
+;Estado q16.
+16 1 1 l 16
+16 0 0 l 16
+16 ? _ l 16
+16 * * * halt-accept
